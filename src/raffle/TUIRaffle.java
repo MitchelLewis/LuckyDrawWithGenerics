@@ -21,6 +21,8 @@ public class TUIRaffle {
 
 	private Raffle raffle;
 	private Scanner keyboard;
+	private Currency ticketCost;
+	private Currency revenue;
 		
 	/**
 	 * Constructor
@@ -32,7 +34,10 @@ public class TUIRaffle {
 		
 		// create a Scanner object for obtaining input from keyboard
 		keyboard = new Scanner(System.in);
-		
+
+		revenue = new Currency(0);
+
+		setPriceOfTicket();
 		setUpPrizes();
 	}
 	
@@ -66,23 +71,48 @@ public class TUIRaffle {
 		}
 	}
 
+	/*
+		Allow user to set the price of each ticket in the given raffle
+	 */
+	private void setPriceOfTicket() {
+		System.out.println("> Setting price of each ticket in raffle...");
+		String prompt = "How much is each ticket in the raffle?";
+		System.out.println(prompt);
+		int value = getInt(prompt);
+		ticketCost = new Currency(value);
+	}
+
 	/**
 	 * Sell tickets to a buyer.
 	 * The buyer can buy many tickets in a single transaction.
 	 */
 	public void sellTickets() {
-		
-		System.out.println("What is your name? ");
-		String buyer = keyboard.nextLine();
-		
-		String prompt = "How many tickets do you want to buy? ";
-		System.out.println(prompt);
-		int howMany = getInt(prompt);
-		
-		// Sell multiple tickets...
-		while (howMany > 0) {
-			raffle.sellTicket(buyer);
-			howMany--;
+
+		String more = "yes";
+
+		/*
+		 * Prompt the user to enter the details of each prize.
+		 * This routine will continue until the user said that
+		 * 	no more prizes is to be entered.
+		 */
+		while ((more.trim().toLowerCase()).equals("yes")) {
+
+			System.out.println("What is your name? ");
+			String buyer = keyboard.nextLine();
+			String prompt = "How many tickets do you want to buy? ";
+			System.out.println(prompt);
+			int howMany = getInt(prompt);
+
+			// Sell multiple tickets...
+			while (howMany > 0) {
+				raffle.sellTicket(buyer);
+				revenue.addToAmount(ticketCost.getAmount());
+				howMany--;
+			}
+
+			// Ask the user if more tickets are to be added.
+			System.out.print("More tickets (yes or no)? ");
+			more = keyboard.nextLine();
 		}
 	}
 	
@@ -142,12 +172,13 @@ public class TUIRaffle {
 
 		// Simulate selling tickets in 5 transactions
 		System.out.println("> Selling tickets...");
-		for (int i = 0; i < 5; i++) {
-			tui.sellTickets();
-		}
+		tui.sellTickets();
 		
 		// Draw prizes
 		System.out.println("> Drawing prizes...");
 		tui.results();
+
+		System.out.println("> Total revenue");
+		System.out.println("Total revenue for this raffle was: £" + tui.revenue.getAmount());
 	}
 }
