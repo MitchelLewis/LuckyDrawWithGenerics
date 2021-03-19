@@ -5,6 +5,7 @@ package raffle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -101,9 +102,12 @@ public class Raffle {
 		 * box have been exhausted, i.e. when there are more prizes 
 		 * than tickets sold. 
 		 */
+		Iterator<Ticket> ticketIterator = ticketBox.iterator();
 		for(Prize prize: prizeBox) {
-			Ticket ticketDrawn = ticketBox.draw();
-			winners.put(prize, ticketDrawn);
+			if(ticketIterator.hasNext()) {
+				Ticket ticketDrawn = ticketBox.draw();
+				winners.put(prize, ticketDrawn);
+			}
 		}
 		
 		return winners;
