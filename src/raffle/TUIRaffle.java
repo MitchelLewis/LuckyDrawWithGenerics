@@ -130,14 +130,14 @@ public class TUIRaffle {
 		 * prizes and their winners one-by-one and output an announcement 
 		 * for each prize and its winner. 
 		 */
-		for(Map.Entry<Prize, Ticket> prizeAndTicket: winners.entrySet()) {
-			System.out.println("WINNER!");
-			System.out.println(prizeAndTicket.getKey().toString());
-			System.out.println(prizeAndTicket.getValue().toString());
-		}
-		
-		
-		
+		winners.entrySet().stream().forEach(
+				prizeAndTicket -> {
+					System.out.println("WINNER!");
+					System.out.println(prizeAndTicket.getKey().toString());
+					System.out.println(prizeAndTicket.getValue().toString());
+				}
+		);
+
 		System.out.println("Many Congratulations!!");
 	}
 

@@ -103,10 +103,11 @@ public class Raffle {
 		 * than tickets sold. 
 		 */
 		Iterator<Ticket> ticketIterator = ticketBox.iterator();
-		for(Prize prize: prizeBox) {
+		Iterator<Prize> prizeIterator = prizeBox.iterator();
+		while(prizeIterator.hasNext()) {
 			if(ticketIterator.hasNext()) {
 				Ticket ticketDrawn = ticketBox.draw();
-				winners.put(prize, ticketDrawn);
+				winners.put(prizeIterator.next(), ticketDrawn);
 			}
 		}
 		
